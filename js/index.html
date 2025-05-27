@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>오현고</title>
 </head>
 <body>
     <ul id="board">
@@ -12,21 +12,48 @@
     </ul>
     <form id="post-form" action="">
         <input type="text" id="write">
-        <button>추가</button>
+        <button>첨가</button>
     </form>
 </body>
 <script>
+    const todos=[];
     
-    document.querySelector("#post-form").addEventListener("submit",(e)=>{
-       e.preventDefault();
-       const postText = document.querySelector("#write").value
-       if (postText !=="" ) {
+    function init(){
+        JSON.parse(localStorage.getItem('todos')).forEach((todo)=>{
+            todos.push(todo)
+        });
+        todos.forEach(addTodo);
+    }
+    init();
+
+    function addTodo(postText){
+        const post = document.createElement("li");
+        post.innerText = postText;
+        document.querySelector("#board").appendChild(post);
+    }
+
+
+document.querySelector("#post-form").addEventListener("submit",(e)=>{
+    e.preventDefault();
+    const postText = document.querySelector("#write").value
+    if (postText !=="" ) {
         
-       const post = document.createElement("li");
-       post.innerText = postText;
-       document.querySelector("#board").appendChild(post)
-       document.querySelector("#write").value=""
-       }
+          document.querySelector("#write").value="";
+          todos.push(postText);
+          localStorage.setItem('todos',JSON.stringify(todos));
+          document.querySelector("#board").innerHTML="";
+          todos.forEach(addTodo);
+
+
+            
+          }
+
+
+
+
+       
+       
+       console.log(todos)
        
        
     }) 
